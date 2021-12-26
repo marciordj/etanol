@@ -1,0 +1,26 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  .fuels {
+    display: flex;
+    width: 100%;
+    // max-width: 50vw;
+    justify-content: center;
+    margin-top: 45px;
+    // background-color: red;
+  
+    h3 {
+      margin-left: 5rem;
+      text-align: center;
+    }
+  }
+
+  .inputFuelValue {
+    input {
+      margin-left: 5rem;
+    }
+  }
+}
