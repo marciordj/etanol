@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Formik, Field, Form, FormikHelpers } from 'formik'
+import { useFormik } from 'formik'
+import * as yup from 'yup';
 import styles from './App.module.scss'
 
 interface Values {
@@ -7,46 +8,44 @@ interface Values {
   etanol: string;
 }
 
+const validationSchema = yup.object({
+  etanol: yup.string().required('Add alguma coisa'),
+  gasoline: yup.string().required('Add alguma coisa'),
+})
+
 function App() {
   const [count, setCount] = useState(0)
 
-  const calcFuel = (etanol: string, gasoline:string) => {
-    return (parseFloat(etanol) / parseFloat(gasoline)) * 100
-  }
+  const calcFuel = (etanol: string, gasoline:string) => (parseFloat(etanol) / parseFloat(gasoline)) * 100
+
+  const formik = useFormik<Values>({
+    validationSchema,
+    initialValues: {
+      etanol: '',
+      gasoline: ''
+    },
+    onSubmit: values => {
+      console.log(calcFuel(values.etanol, values.gasoline))
+    }
+  })
 
   return (
     <div className={styles.App}>
-      <Formik initialValues={{
-        etanol: '',
-        gasoline: ''
-      }}
-      onSubmit={(
-        {etanol, gasoline}: Values,
-        {setSubmitting}: FormikHelpers<Values> 
-      ) => {
-        console.log('etanol: -->', etanol);
-        console.log('gasoline: -->', gasoline);
-        console.log(parseInt(etanol) / parseInt(gasoline))
-      }}
-      >
-
       {/* <div className={styles.fuels}>
       <h3>Etanol</h3>
       <h3>X</h3>
       <h3>Gasolina</h3>
       </div> */}
 
-      <Form className={styles.inputFuelValue}>
+      <form onSubmit={formik.handleSubmit} className={styles.inputFuelValue}>
         <label htmlFor="gasoline">Etanol</label>
-        <Field type="text" id='etanol' name='etanol' />
+        <input onChange={formik.handleChange} value={formik.values.etanol} type="text" id='etanol' name='etanol' />
         <label htmlFor="etanol">Gasolina</label>
-        <Field type='text' id='gasoline' name='gasoline' />
+        <input onChange={formik.handleChange} value={formik.values.gasoline} type='text' id='gasoline' name='gasoline' />
 
 
       <button type='submit'>Calcular</button>
-      </Form>
-      </Formik>
-
+      </form>
     </div>
   )
 }
