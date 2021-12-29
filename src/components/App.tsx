@@ -48,7 +48,7 @@ function App() {
           value={formik.values.etanol} 
           onChange={formik.handleChange} 
           className={styles.input} 
-          inputMode='decimal'
+          inputMode='numeric'
         />
 
         <TextField 
@@ -57,7 +57,7 @@ function App() {
           label='Gasolina' id='gasoline' name='gasoline' value={formik.values.gasoline} 
           onChange={formik.handleChange} 
           className={styles.input} 
-          inputMode='decimal'
+          inputMode='numeric'
         />
         <Button type='submit'>Calcular</Button>
       </form>
