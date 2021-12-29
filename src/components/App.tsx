@@ -17,8 +17,13 @@ const validationSchema = yup.object({
 function App() {
   const [fuel, setFuel] = useState(0)
 
-  const calcFuel = (etanol: string, gasoline:string) => {
-    const calcPercentageFuel = (parseFloat(etanol) / parseFloat(gasoline)) * 100
+  const calcFuel = (etanol: string, gasoline: string) => {
+    const etanolReplaced = etanol.replace(/,/, '.')
+    const gasolineReplaced = gasoline.replace(/,/, '.') 
+
+    console.log('etanol -->', etanolReplaced)
+    console.log('gasolina -->', gasolineReplaced)
+    const calcPercentageFuel = (parseFloat(etanolReplaced) / parseFloat(gasolineReplaced)) * 100
 
     return Math.round(calcPercentageFuel)
   }
