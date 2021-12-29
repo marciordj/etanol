@@ -49,7 +49,14 @@ function App() {
         <Button type='submit'>Calcular</Button>
       </form>
 
-      <Alert className={styles.alert} severity='error'>{fuel >= 78 ? `A paridade está em ${fuel}%, melhor colocar gasolina` : `A paridade está em ${fuel}%, melhor colocar alcool`}</Alert>
+      {fuel === 0 ? '' : 
+        <Alert 
+          className={styles.alert} 
+          severity='info'>
+          {fuel >= 78 ? `A paridade está em ${fuel}%, melhor colocar gasolina` : `A paridade está em ${fuel}%, melhor colocar alcool`}
+        </Alert>
+      }
+      
     </div>
   )
 }
