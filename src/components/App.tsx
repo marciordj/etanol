@@ -10,8 +10,8 @@ interface Values {
 }
 
 const validationSchema = yup.object({
-  etanol: yup.string().required('Add alguma coisa'),
-  gasoline: yup.string().required('Add alguma coisa'),
+  etanol: yup.string().required('Preencha o campo corretamente'),
+  gasoline: yup.string().required('Preencha o campo corretamente'),
 })
 
 function App() {
@@ -24,11 +24,12 @@ function App() {
   }
 
   const formik = useFormik<Values>({
-    validationSchema,
+    
     initialValues: {
       etanol: '',
       gasoline: ''
     },
+    validationSchema: validationSchema,
     onSubmit: values => {
       console.log(calcFuel(values.etanol, values.gasoline))
       setFuel(calcFuel(values.etanol, values.gasoline))
@@ -37,15 +38,25 @@ function App() {
 
   return (
     <div className={styles.App}>
-      {/* <div className={styles.fuels}>
-      <h3>Etanol</h3>
-      <h3>X</h3>
-      <h3>Gasolina</h3>
-      </div> */}
-
       <form onSubmit={formik.handleSubmit} className={styles.inputFuelValue}>
-        <TextField label='Etanol' id='etanol' name='etanol' value={formik.values.etanol} onChange={formik.handleChange} className={styles.input} />
-        <TextField label='Gasolina' id='gasoline' name='gasoline' value={formik.values.gasoline} onChange={formik.handleChange} className={styles.input} />
+        <TextField 
+          helperText={formik.touched.etanol && formik.errors.etanol} 
+          error={formik.touched.etanol && Boolean(formik.errors.etanol)} 
+          label='Etanol' 
+          id='etanol' 
+          name='etanol' 
+          value={formik.values.etanol} 
+          onChange={formik.handleChange} 
+          className={styles.input} 
+        />
+
+        <TextField 
+          helperText={formik.touched.gasoline && formik.errors.gasoline} 
+          error={formik.touched.gasoline && Boolean(formik.errors.gasoline)} 
+          label='Gasolina' id='gasoline' name='gasoline' value={formik.values.gasoline} 
+          onChange={formik.handleChange} 
+          className={styles.input} 
+        />
         <Button type='submit'>Calcular</Button>
       </form>
 
