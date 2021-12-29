@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup';
+import { TextField, Button, Alert } from '@mui/material';
 import styles from './App.module.scss'
 
 interface Values {
@@ -14,9 +15,13 @@ const validationSchema = yup.object({
 })
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [fuel, setFuel] = useState(0)
 
-  const calcFuel = (etanol: string, gasoline:string) => (parseFloat(etanol) / parseFloat(gasoline)) * 100
+  const calcFuel = (etanol: string, gasoline:string) => {
+    const calcPercentageFuel = (parseFloat(etanol) / parseFloat(gasoline)) * 100
+
+    return Math.round(calcPercentageFuel)
+  }
 
   const formik = useFormik<Values>({
     validationSchema,
@@ -26,6 +31,7 @@ function App() {
     },
     onSubmit: values => {
       console.log(calcFuel(values.etanol, values.gasoline))
+      setFuel(calcFuel(values.etanol, values.gasoline))
     }
   })
 
@@ -38,14 +44,12 @@ function App() {
       </div> */}
 
       <form onSubmit={formik.handleSubmit} className={styles.inputFuelValue}>
-        <label htmlFor="gasoline">Etanol</label>
-        <input onChange={formik.handleChange} value={formik.values.etanol} type="text" id='etanol' name='etanol' />
-        <label htmlFor="etanol">Gasolina</label>
-        <input onChange={formik.handleChange} value={formik.values.gasoline} type='text' id='gasoline' name='gasoline' />
-
-
-      <button type='submit'>Calcular</button>
+        <TextField label='Etanol' id='etanol' name='etanol' value={formik.values.etanol} onChange={formik.handleChange} className={styles.input} />
+        <TextField label='Gasolina' id='gasoline' name='gasoline' value={formik.values.gasoline} onChange={formik.handleChange} className={styles.input} />
+        <Button type='submit'>Calcular</Button>
       </form>
+
+      <Alert className={styles.alert} severity='error'>{fuel >= 78 ? `A paridade está em ${fuel}%, melhor colocar gasolina` : `A paridade está em ${fuel}%, melhor colocar alcool`}</Alert>
     </div>
   )
 }
