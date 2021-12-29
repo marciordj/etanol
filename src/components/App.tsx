@@ -26,6 +26,7 @@ function App() {
     const calcPercentageFuel = (parseFloat(etanolReplaced) / parseFloat(gasolineReplaced)) * 100
 
     return Math.round(calcPercentageFuel)
+    // return calcPercentageFuel.toFixed(2)
   }
 
   const formik = useFormik<Values>({
